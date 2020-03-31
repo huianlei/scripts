@@ -10,4 +10,5 @@ if exist %work_dir% (
 mkdir %work_dir%
 
 cd /d %work_dir%
-git clone 
+
+git clone https://github.com/huianlei/scripts.git
