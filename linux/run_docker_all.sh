@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 #-------------------------------------------------
 #Note:
 #1. must create static network like list first
@@ -7,8 +6,8 @@
 #so container can use static ip when create it
 #-------------------------------------------------
 #must set base work dir
-
 DOCKER_ANTIA_BASE=$HOME/docker-antia
+echo "DOCKER_ANTIA_BASE=${DOCKER_ANTIA_BASE}"
 if [ ! -d ${DOCKER_ANTIA_BASE} ]; then
 	mkdir -p ${DOCKER_ANTIA_BASE}
 fi
