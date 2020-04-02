@@ -20,7 +20,7 @@ if [ ! -d ${SERVER_DEPLOY_DIR} ]; then
 fi
 
 function run_docker(){
-	found_str=`docker ps | grep ${docker_name}`
+	found_str=`docker ps -a | grep ${docker_name}`
 	sudo --help > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		cmd="sudo ${cmd}"
@@ -53,6 +53,7 @@ MYSQL_DATA_DIR=${DOCKER_ANTIA_BASE}/mysql_data
 docker_name="docker-mysql"
 cmd="docker run --name ${docker_name} --restart=always -itd -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123147 \
 	-v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
+	-v ${MYSQL_DATA_DIR}:/var/lib/mysql \
 	--network StaticNet --ip 172.18.0.3 \
 	10.0.107.63:5000/mysql:5.6"
 run_docker
