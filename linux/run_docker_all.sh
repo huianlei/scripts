@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# must set base work dir
 DOCKER_ANTIA_BASE=$HOME/docker-antia
 if [ ! -d ${DOCKER_ANTIA_BASE} ]; then
 	mkdir -p ${DOCKER_ANTIA_BASE}
