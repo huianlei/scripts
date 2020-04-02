@@ -37,6 +37,24 @@ function run_docker(){
 	sleep 3
 }
 
+function check_mysql(){
+	status=`docker inspect -f {{.State.Status}} ${docker_name}`
+	echo "checked ${docker_name} status:${status}"
+	if [ "${status}" != "running" ]; then
+		echo "${docker_name} status not running, stop and rm the container"
+		docker stop ${docker_name}
+		sleep 2
+		docker rm ${docker_name}
+		sleep 2
+		# not bind mysql_data dir
+		cmd="docker run --name ${docker_name} --restart=always -itd -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123147 \
+		-v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
+		--network StaticNet --ip 172.18.0.3 \
+		10.0.107.63:5000/mysql:5.6"
+		run_docker
+	fi
+}
+
 # run redis
 docker_name="docker-redis"
 cmd="docker run --name ${docker_name} -itd -p 6379:6379 --restart=always \
@@ -57,6 +75,7 @@ cmd="docker run --name ${docker_name} --restart=always -itd -p 3306:3306 -e MYSQ
 	--network StaticNet --ip 172.18.0.3 \
 	10.0.107.63:5000/mysql:5.6"
 run_docker
+check_mysql
 
 # run gameserver
 echo "SERVER_DEPLOY_DIR=$SERVER_DEPLOY_DIR"
