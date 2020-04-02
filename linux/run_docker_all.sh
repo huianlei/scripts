@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
-# must set base work dir
+#-------------------------------------------------
+#Note:
+#1. must create static network like list first
+#docker network create --subnet 172.18.0.1/16 StaticNet
+#so container can use static ip when create it
+#-------------------------------------------------
+#must set base work dir
+
 DOCKER_ANTIA_BASE=$HOME/docker-antia
 if [ ! -d ${DOCKER_ANTIA_BASE} ]; then
 	mkdir -p ${DOCKER_ANTIA_BASE}
@@ -33,9 +40,9 @@ function run_docker(){
 # run redis
 docker_name="docker-redis"
 cmd="docker run --name ${docker_name} -itd -p 6379:6379 --restart=always \
-		-v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
-		10.0.107.63:5000/redis:4.0"
-
+	-v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
+	--network StaticNet --ip 172.18.0.2 \
+	10.0.107.63:5000/redis:4.0"
 run_docker
 
 # run mysql
@@ -45,30 +52,30 @@ MYSQL_DATA_DIR=${DOCKER_ANTIA_BASE}/mysql_data
 
 docker_name="docker-mysql"
 cmd="docker run --name ${docker_name} --restart=always -itd -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123147 \
--v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
-10.0.107.63:5000/mysql:5.6"
-
+	-v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
+	--network StaticNet --ip 172.18.0.3 \
+	10.0.107.63:5000/mysql:5.6"
 run_docker
 
 # run gameserver
 echo "SERVER_DEPLOY_DIR=$SERVER_DEPLOY_DIR"
-mysql_host=`docker inspect -f {{.NetworkSettings.IPAddress}} docker-mysql`
-redis_host=`docker inspect -f {{.NetworkSettings.IPAddress}} docker-redis`
+mysql_host=`docker inspect -f {{.NetworkSettings.Networks.StaticNet.IPAddress}} docker-mysql`
+redis_host=`docker inspect -f {{.NetworkSettings.Networks.StaticNet.IPAddress}} docker-redis`
 echo "mysql_host=${mysql_host}"
 echo "redis_host=${redis_host}"
 
 docker_name="docker-gameserver"
 cmd="docker run --name ${docker_name} --restart=always -itd \
--p 10022:22 \
--p 9001:9001 \
--e MYSQL_USER="root" \
--e MYSQL_HOST="$mysql_host" \
--e MYSQL_PASSWORD="123147" \
--e REDIS_URL="$redis_host:6379" \
--e SERVER_DEPLOY_DIR="${SERVER_DEPLOY_DIR}" \
--v $SERVER_DEPLOY_DIR:/tmp/deploy/antia/gameserver/ \
-10.0.107.63:5000/gameserver:1.0"
-
+	-p 10022:22 \
+	-p 9001:9001 \
+	-e MYSQL_USER="root" \
+	-e MYSQL_HOST="$mysql_host" \
+	-e MYSQL_PASSWORD="123147" \
+	-e REDIS_URL="$redis_host:6379" \
+	-e SERVER_DEPLOY_DIR="${SERVER_DEPLOY_DIR}" \
+	-v $SERVER_DEPLOY_DIR:/tmp/deploy/antia/gameserver/ \
+	--network StaticNet --ip 172.18.0.4 \
+	10.0.107.63:5000/gameserver:1.0"
 run_docker
 
 # show docker containers
