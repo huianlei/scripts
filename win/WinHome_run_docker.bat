@@ -1,11 +1,11 @@
 @echo off 
-title run redis docker
+title run dockers for WinHome Edition
 
 :: check env
 
 echo USERPROFILE=%USERPROFILE%
-MYSQL_DATA_HOME=%USERPROFILE%\docker-antia\mysql_data
-SERVER_DEPLOY_DIR=%USERPROFILE%\docker-antia\gameserver
+set MYSQL_DATA_HOME=%USERPROFILE%\docker-antia\mysql_data
+set SERVER_DEPLOY_DIR=%USERPROFILE%\docker-antia\gameserver
 
 :: redis
 set container_name=docker-redis
@@ -35,7 +35,7 @@ if errorlevel 1 (
 	echo run docker %container_name% ...
 	choice /t 1 /d y /n >nul
 	docker run --name %container_name% -itd -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123147 ^
-		-v %MYSQL_DATA_HOME%:/var/lib/mysql --restart=always  10.0.107.63:5000/mysql:5.6
+		--restart=always  10.0.107.63:5000/mysql:5.6
 	choice /t 3 /d y /n >nul
 	docker ps
 	choice /t 2 /d y /n >nul
