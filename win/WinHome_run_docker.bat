@@ -61,7 +61,7 @@ if errorlevel 1 (
 		-e MYSQL_USER="root" -e MYSQL_HOST="172.18.0.3" -e MYSQL_PASSWORD="123147" ^
 		-e SERVER_DEPLOY_DIR="%SERVER_DEPLOY_DIR%" ^
 		-v %SERVER_DEPLOY_DIR%:/tmp/deploy/antia/gameserver/ ^
-		10.0.107.63:5000/mysql:5.6
+		10.0.107.63:5000/gameserver:1.0
 	choice /t 3 /d y /n >nul
 	docker ps
 	choice /t 2 /d y /n >nul
