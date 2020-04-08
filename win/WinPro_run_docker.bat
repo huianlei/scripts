@@ -9,6 +9,8 @@ if not exist %DOCKER_ANTIA_BASE% md %DOCKER_ANTIA_BASE%
 set MYSQL_DATA_HOME=%USERPROFILE%\docker-antia\mysql_data
 set SERVER_DEPLOY_DIR=%USERPROFILE%\docker-antia\gameserver
 
+call init.bat
+
 :: static ip 
 set DOCKER_REDIS_IP=172.18.0.2
 set DOCKER_MYSQL_IP=172.18.0.3
@@ -24,12 +26,15 @@ if errorlevel 1 (
 	choice /t 1 /d y /n >nul
 	docker run --name %container_name% -itd -p 6379:6379 --restart=always --network StaticNet --ip %DOCKER_REDIS_IP% ^
 		10.0.107.63:5000/redis:4.0
+	if errorlevel 1 (
+		echo run docker %container_name% failed, please check err info to fix it
+		goto :pause_exit
+	)
 	choice /t 3 /d y /n >nul
-	docker ps
+	docker ps | findstr %container_name%
 	choice /t 2 /d y /n >nul
 ) else (
 	echo %container_name% container already exists
-	docker ps
 	choice /t 3 /d y /n >nul
 )
 
@@ -45,12 +50,15 @@ if errorlevel 1 (
 	docker run --name %container_name% -itd -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123147 ^
 		-v %MYSQL_DATA_HOME%:/var/lib/mysql --restart=always  --network StaticNet --ip %DOCKER_MYSQL_IP% ^
 		10.0.107.63:5000/mysql:5.6
+	if errorlevel 1 (
+		echo run docker %container_name% failed, please check err info to fix it
+		goto :pause_exit
+	)	
 	choice /t 3 /d y /n >nul
-	docker ps
+	docker ps | findstr %container_name%
 	choice /t 2 /d y /n >nul
 ) else (
 	echo %container_name% container already exists
-	docker ps
 	choice /t 3 /d y /n >nul
 )
 
@@ -67,19 +75,26 @@ if errorlevel 1 (
 		--restart=always --network StaticNet --ip %DOCKER_GAMESERVER_IP% ^
 		-e MYSQL_USER="root" -e MYSQL_HOST="%DOCKER_MYSQL_IP%" -e MYSQL_PASSWORD="123147" ^
 		-e SERVER_DEPLOY_DIR="%SERVER_DEPLOY_DIR%" ^
-		-e REDIS_URL="%DOCKER_REDIS_IP%:6379"
+		-e REDIS_URL="%DOCKER_REDIS_IP%:6379" ^
 		-v %SERVER_DEPLOY_DIR%:/tmp/deploy/antia/gameserver/ ^
 		10.0.107.63:5000/gameserver:1.0
+		if errorlevel 1 (
+			echo run docker %container_name% failed, please check err info to fix it
+			goto :pause_exit
+		)		
 	choice /t 3 /d y /n >nul
-	docker ps
+	docker ps | findstr %container_name%
 	choice /t 2 /d y /n >nul
 ) else (
 	echo %container_name% container already exists
-	docker ps
 	choice /t 3 /d y /n >nul
 )
 
-goto :pause_exit
+echo ---------------------------------------all containers------------------------------------------
+docker ps 
+echo -----------------------------------------------------------------------------------------------
+choice /t 5 /d y /n >nul
+goto :eof
 
 :pause_exit
 pause
