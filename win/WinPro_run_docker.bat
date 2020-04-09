@@ -1,5 +1,7 @@
 @echo off 
 title run redis docker
+:: set terminal utf-8
+chcp 65001
 
 :: check env
 

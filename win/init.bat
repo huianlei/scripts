@@ -1,5 +1,7 @@
 @echo off 
 title init docker env
+:: set terminal utf-8
+chcp 65001
 
 set cur_dir=%cd%
 echo USERPROFILE=%USERPROFILE%
