@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function fetch_remote(){
-	curl -s -o ${file_name} ${url}
+	curl -s -L -o ${file_name} ${url}
 	if [ $# -ne 0 ]; then
 	  echo "pull from ${url} failed"
 	  exit 1
@@ -26,10 +26,12 @@ file_name="pkg.zip"
 url="http://10.0.107.63/download/${file_name}"
 fetch_remote
 
-TO_DIR=/tmp/deploy/antia/gameserver
+
+TO_DIR=${SERVER_DEPLOY_DIR-/tmp/deploy/antia/gameserver}
 rm -rf $TO_DIR/pkg
 mv --force gameserver $TO_DIR
 mv --force pkg $TO_DIR
 
 cp -R configs $TO_DIR
 
+curl -s -L -O Makefile http://10.0.107.63/download/Makefile
