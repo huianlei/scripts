@@ -1,7 +1,0 @@
-#global.toml全局配置，其他配置可以包含这个配置
-
-# 应用名
-app_name = "antia"
-
-# antia的gameId
-game_id = 100012
