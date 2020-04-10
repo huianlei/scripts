@@ -26,12 +26,18 @@ file_name="pkg.zip"
 url="http://10.0.107.63/download/${file_name}"
 fetch_remote
 
+file_name="configs.zip"
+url="http://10.0.107.63/download/${file_name}"
+fetch_remote
+
 
 TO_DIR=${SERVER_DEPLOY_DIR-/tmp/deploy/antia/gameserver}
-rm -rf $TO_DIR/pkg
+
+cur_dir=`pwd`
+cd $TO_DIR
+ln -s $cur_dir/pkg pkg
+ln -s $cur_dir/configs configs
+cd -
+
 mv --force gameserver $TO_DIR
-mv --force pkg $TO_DIR
-
-cp -R configs $TO_DIR
-
-curl -s -L -O Makefile http://10.0.107.63/download/Makefile
+curl -s -L -o Makefile http://10.0.107.63/download/Makefile

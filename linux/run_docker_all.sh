@@ -12,10 +12,11 @@ if [ ! -d ${DOCKER_ANTIA_BASE} ]; then
 	mkdir -p ${DOCKER_ANTIA_BASE}
 fi
 echo "DOCKER_ANTIA_BASE=${DOCKER_ANTIA_BASE}"
-SERVER_DEPLOY_DIR="${DOCKER_ANTIA_BASE}/gameserver"
-if [ ! -d ${SERVER_DEPLOY_DIR} ]; then
-    echo "${SERVER_DEPLOY_DIR} not exist, create it"
-    mkdir -p ${SERVER_DEPLOY_DIR}
+SERVER_MOUNT_DIR="${DOCKER_ANTIA_BASE}/gameserver"
+SERVER_DEPLOY_DIR="/tmp/deploy/antia/gameserver"
+if [ ! -d ${SERVER_MOUNT_DIR} ]; then
+    echo "${SERVER_MOUNT_DIR} not exist, create it"
+    mkdir -p ${SERVER_MOUNT_DIR}
 fi
 
 function run_docker(){
@@ -92,9 +93,9 @@ cmd="docker run --name ${docker_name} --restart=always -itd \
 	-e MYSQL_PASSWORD="123147" \
 	-e REDIS_URL="$redis_host:6379" \
 	-e SERVER_DEPLOY_DIR="${SERVER_DEPLOY_DIR}" \
-	-v $SERVER_DEPLOY_DIR:/tmp/deploy/antia/gameserver/ \
+	-v $SERVER_MOUNT_DIR:${SERVER_DEPLOY_DIR} \
 	--network StaticNet --ip 172.18.0.4 \
-	10.0.107.63:5000/gameserver:1.0"
+	gameserver"
 run_docker
 
 # show docker containers

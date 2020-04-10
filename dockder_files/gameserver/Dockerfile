@@ -51,12 +51,13 @@ tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel \
 
 
 # copy files to workdir
-COPY ../../linux/bin/* .
+COPY init.zip .
 
 #
-RUN chmod 744 *.sh \
-&& ls -lt \
-&& sh http_sync.sh
+RUN unzip init.zip \ 
+&& chmod 744 *.sh \
+&& rm -rf init.zip \
+&& ls -lt
 
 
-
+# ENTRYPOINT [ "sh", "http_sync.sh" ]
