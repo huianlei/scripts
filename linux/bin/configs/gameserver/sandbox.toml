@@ -1,0 +1,30 @@
+inherit_files=["gameserver.toml"]
+
+env_name = "sandbox"
+debug_mode = false
+commit_file = "/data/project/gameserver/configs/commit"
+
+# 游戏逻辑相关配表目录
+path_raw_data = "/data/project/gameserver/pkg/gen/conf/rawdata"
+
+redis_url= "10.11.151.169:6379"
+redis_passwd = ""
+
+sqldb_mysql_dbname = "antia_server"
+sqldb_driver = "mysql"
+sqldb_mysql_user = "root"
+sqldb_mysql_passwd = "JJq9S5t(eHGHy"
+sqldb_mysql_host = "10.11.151.210"
+sqldb_mysql_port = "3306"
+sqldb_dbproxy_endpoints = ["localhost:12321"]
+
+
+# fplog agent通讯方式
+fplog_protocol = "unix"
+fplog_address = "/tmp/fplog.sock"
+# fplog标签
+fplog_tag = "antia.global.production.gameserver.bi"
+
+#passport检查session地址
+passport_check_url = "https://passport.puzzleplusgames.net/api/v1/check_session"
+

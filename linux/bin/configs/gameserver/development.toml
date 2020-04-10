@@ -1,0 +1,21 @@
+inherit_files=["gameserver.toml"]
+
+env_name = "development"
+debug_mode = true
+commit_file = "/data/project/gameserver/configs/commit"
+
+# 游戏逻辑相关配表目录
+path_raw_data = 'pkg/gen/conf/rawdata'
+
+redis_url= "localhost:22121"
+redis_passwd = ""
+
+sqldb_driver = "fpnndbproxy-cluster"
+sqldb_dbproxy_endpoints = ["127.0.0.1:12321"]
+
+# fplog agent通讯方式
+fplog_protocol = "unix"
+fplog_address = "/tmp/fplog.sock"
+# fplog标签
+fplog_tag = "antia.global.development.gameserver.bi"
+

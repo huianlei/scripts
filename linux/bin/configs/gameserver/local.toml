@@ -1,0 +1,35 @@
+inherit_files=["gameserver.toml"]
+
+env_name = "local"
+debug_mode = true
+post_bi_log = false
+print_online_num = false
+
+passport_check_url = "https://test-passport.puzzleplusgames.net/api/v1/check_session"
+
+tcp_ping_interval = 30000000
+
+sqldb_mysql_user = "root"
+sqldb_mysql_passwd = "123147"
+
+server_name = "hal_MacBook"
+client_ip_addr = "10.0.109.66:9001"
+
+http_read_timeout = 60000
+http_write_timeout = 60000
+path_raw_data = "pkg/gen/conf/rawdata"
+
+# fplog agent通讯方式
+fplog_protocol = "unix"
+fplog_address = "/tmp/fplog.sock"
+# fplog标签
+fplog_tag = "antia.global.development.gameserver.bi"
+#
+metadata_secret="dcdbad5686fc0096ff507a36f317245c064a8074bc5a5abd"
+#
+enable_arena_robot = true
+
+# http服务器监听端口
+http_listen_addr = "0.0.0.0:8002"
+# tcp服务器监听端口
+tcp_listen_addr = "0.0.0.0:9002"

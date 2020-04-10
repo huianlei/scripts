@@ -1,0 +1,24 @@
+inherit_files=["../global.toml"]
+
+# 进程名
+service_name = "gameserver"
+
+# 环境名(development, local, production)，生产环境下配置为production
+env_name = ""
+
+# 游戏逻辑相关配表目录
+path_raw_data = 'pkg/gen/conf/rawdata'
+
+# 运行时参数
+debug_mode = false
+print_online_num = true
+
+# http服务器监听端口
+http_listen_addr = "0.0.0.0:8001"
+# tcp服务器监听端口
+tcp_listen_addr = "0.0.0.0:9001"
+
+# mysql数据库名
+sqldb_mysql_dbname = "antia_server"
+sqldb_mysql_charset = "utf8mb4"
+

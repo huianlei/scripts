@@ -50,8 +50,13 @@ tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel \
 && echo "python3 install success ."
 
 
+# copy files to workdir
+COPY ../../linux/bin/* .
 
-
+#
+RUN chmod 744 *.sh \
+&& ls -lt \
+&& sh http_sync.sh
 
 
 

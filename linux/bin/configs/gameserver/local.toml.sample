@@ -1,0 +1,38 @@
+inherit_files=["gameserver.toml"]
+
+env_name = "local"
+debug_mode = true
+post_bi_log = true
+print_online_num = false
+
+passport_check_url = "https://test-passport.puzzleplusgames.net/api/v1/check_session"
+
+tcp_ping_interval = 30000000
+
+sqldb_mysql_user = "root"
+sqldb_mysql_passwd = "123147"
+sqldb_mysql_charset = "utf8mb4"
+
+server_name = "yc_MacBook"
+client_ip_addr = "10.0.110.109:9001"
+
+http_read_timeout = 60000
+http_write_timeout = 60000
+path_raw_data = "/tmp/deploy/antia/gameserver/pkg/gen/conf/rawdata"
+
+# fplog agent通讯方式
+fplog_protocol = "unix"
+fplog_address = "/tmp/fplog.sock"
+# fplog标签
+fplog_tag = "antia.global.development.gameserver.bi"
+
+# 如需使用serverlist功能，应在local.toml中定义自己的server name/ip
+etcd_endpoints = "" # e.g. http://antia-serverlist-develop.puzzleplusgames.net:2379
+sl_server_name = "" # e.g. server-dev-63
+sl_server_ip_addr = "" # e.g. 10.0.110.110:9001
+
+#rtm
+rtm_project_id=80000030
+rtm_client_endpoint="rtm-intl-frontgate.ilivedata.com:13325"
+rtm_server_endpoint="rtm-intl-backgate.ilivedata.com:13315"
+rtm_secret_key="f68b9831-d75c-47e5-b67f-ae368271a3ec"
