@@ -19,6 +19,12 @@ if [ ! -d ${SERVER_MOUNT_DIR} ]; then
     mkdir -p ${SERVER_MOUNT_DIR}
 fi
 
+REDIS_MOUNT_DIR=${DOCKER_ANTIA_BASE}/redis_data
+if [ ! -d ${REDIS_MOUNT_DIR} ]; then
+    echo "${REDIS_MOUNT_DIR} not exist, create it"
+    mkdir -p ${REDIS_MOUNT_DIR}
+fi
+
 function run_docker(){
 	found_str=`docker ps -a | grep ${docker_name}`
 	sudo --help > /dev/null 2>&1
@@ -59,6 +65,7 @@ function check_mysql(){
 docker_name="docker-redis"
 cmd="docker run --name ${docker_name} -itd -p 6379:6379 --restart=always \
 	-v $DOCKER_ANTIA_BASE/docker.sock:/var/run/docker.sock \
+	-v ${REDIS_MOUNT_DIR}:/data \
 	--network StaticNet --ip 172.18.0.2 \
 	10.0.107.63:5000/redis:4.0"
 run_docker

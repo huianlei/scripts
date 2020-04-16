@@ -50,14 +50,25 @@ tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel \
 && echo "python3 install success ."
 
 
+# yum install mysql 
+RUN echo "============================================================" \ 
+&& rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm \
+&& yum install -y mysql-community-client.x86_64 \
+&& echo "mysql client install success."
+
+# yum install tools
+RUN echo "============================================================" \
+&& yum install -y tree \
+&& echo "install some tool success."
+
 # copy files to workdir
 COPY init.zip .
 
 #
 RUN unzip init.zip \ 
 && chmod 744 *.sh \
-&& rm -rf init.zip \
-&& ls -lt
+&& rm -rf init.zip
+# && ls -lt
 
 
-# ENTRYPOINT [ "sh", "http_sync.sh" ]
+# ENTRYPOINT [ "sh", "docker-entrypoint.sh" ]
