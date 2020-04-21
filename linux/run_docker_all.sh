@@ -94,7 +94,7 @@ echo "redis_host=${redis_host}"
 docker_name="docker-gameserver"
 cmd="docker run --name ${docker_name} --restart=always -itd \
 	-p 10022:22 \
-	-p 9001:9001 \
+	-p ${DOCKER_GS_PORT-9001}:9001 \
 	-e MYSQL_USER="root" \
 	-e MYSQL_HOST="$mysql_host" \
 	-e MYSQL_PASSWORD="123147" \
