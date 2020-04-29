@@ -81,7 +81,7 @@ if errorlevel 1 (
 		-e SERVER_DEPLOY_DIR="%LinuxDEPLOY_DIR%" ^
 		-e REDIS_URL="%DOCKER_REDIS_IP%:6379" ^
 		-v %SERVER_DEPLOY_DIR%:%LinuxDEPLOY_DIR% ^
-		-v %ANTIA_CONF_HOME%:/root/workspace/conf
+		-v %ANTIA_CONF_HOME%:/root/workspace/conf ^
 		10.0.107.63:5000/gameserver:1.0
 		if errorlevel 1 (
 			echo run docker %container_name% failed, please check err info to fix it
