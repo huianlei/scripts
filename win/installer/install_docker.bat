@@ -1,9 +1,9 @@
-@echo off 
+@echo off
+pushd "%~dp0" 
 title install docker env
 :: set terminal utf-8
 chcp 65001
 
-cd /d D:\docker-antia\scripts\win\installer
 echo USERPROFILE=%USERPROFILE%
 set cur_dir=%cd%
 echo %cur_dir%
