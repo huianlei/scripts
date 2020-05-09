@@ -9,7 +9,7 @@ echo USERPROFILE=%USERPROFILE%
 set DOCKER_ANTIA_BASE=%USERPROFILE%\docker-antia
 if not exist %DOCKER_ANTIA_BASE% md %DOCKER_ANTIA_BASE%
 set MYSQL_DATA_HOME=%USERPROFILE%\docker-antia\mysql_data
-set SERVER_DEPLOY_DIR=%USERPROFILE%\docker-antia\gameserver
+set SERVER_MOUNT_DIR=%USERPROFILE%\docker-antia\gameserver
 
 call init.bat
 
@@ -67,8 +67,8 @@ if errorlevel 1 (
 :: gameserver
 set container_name=docker-gameserver
 echo prepre to run %container_name%
-echo SERVER_DEPLOY_DIR=%SERVER_DEPLOY_DIR%
-set LinuxDEPLOY_DIR=/tmp/deploy/antia/gameserver
+echo SERVER_MOUNT_DIR=%SERVER_MOUNT_DIR%
+set SERVER_DEPLOY_DIR=/tmp/deploy/antia/gameserver
 
 docker ps -a | findstr %container_name% >nul 2>nul
 if errorlevel 1 (
@@ -78,9 +78,9 @@ if errorlevel 1 (
 	docker run --name %container_name% -itd -p 9001:9001 -p 8001:8001 -p 10022:22 ^
 		--restart=always --network StaticNet --ip %DOCKER_GAMESERVER_IP% ^
 		-e MYSQL_USER="root" -e MYSQL_HOST="%DOCKER_MYSQL_IP%" -e MYSQL_PASSWORD="123147" ^
-		-e SERVER_DEPLOY_DIR="%LinuxDEPLOY_DIR%" ^
+		-e SERVER_MOUNT_DIR="%SERVER_DEPLOY_DIR%" ^
 		-e REDIS_URL="%DOCKER_REDIS_IP%:6379" ^
-		-v %SERVER_DEPLOY_DIR%:%LinuxDEPLOY_DIR% ^
+		-v %SERVER_MOUNT_DIR%:%SERVER_DEPLOY_DIR% ^
 		-v %ANTIA_CONF_HOME%:/root/workspace/conf ^
 		10.0.107.63:5000/gameserver
 		if errorlevel 1 (
