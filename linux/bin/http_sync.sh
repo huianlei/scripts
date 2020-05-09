@@ -35,8 +35,16 @@ TO_DIR=${SERVER_DEPLOY_DIR-/tmp/deploy/antia/gameserver}
 
 cur_dir=`pwd`
 cd $TO_DIR
-ln -s $cur_dir/pkg pkg
-ln -s $cur_dir/configs configs
+if [ ! -d pkg ]; then
+  ln -s $cur_dir/pkg pkg
+fi
+if [ ! -d configs ]; then
+  ln -s $cur_dir/configs configs
+fi 
+touch secret-file
+if [ ! -f $cur_dir/jenkins/secret-file ]; then
+  ln -s $TO_DIR/secret-file $cur_dir/jenkins/secret-file
+fi
 cd -
 
 mv --force gameserver $TO_DIR
