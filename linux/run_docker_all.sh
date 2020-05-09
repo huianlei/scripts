@@ -25,6 +25,11 @@ if [ ! -d ${REDIS_MOUNT_DIR} ]; then
     mkdir -p ${REDIS_MOUNT_DIR}
 fi
 
+# jenkins url
+JenkinsNodeName=${1-DevMac_HALDocker}
+JenkinsJnlpUrl=http://10.0.107.63:8090/computer/${JenkinsNodeName}/slave-agent.jnlp
+echo "JenkinsJnlpUrl=${JenkinsJnlpUrl}"
+
 function run_docker(){
 	found_str=`docker ps -a | grep ${docker_name}`
 	sudo --help > /dev/null 2>&1
@@ -92,6 +97,7 @@ echo "mysql_host=${mysql_host}"
 echo "redis_host=${redis_host}"
 
 docker_name="docker-gameserver"
+work_dir="/root/workspace"
 cmd="docker run --name ${docker_name} --restart=always -itd \
 	-p 10022:22 \
 	-p ${DOCKER_GS_PORT-9001}:9001 \
@@ -101,7 +107,9 @@ cmd="docker run --name ${docker_name} --restart=always -itd \
 	-e MYSQL_PASSWORD="123147" \
 	-e REDIS_URL="$redis_host:6379" \
 	-e SERVER_DEPLOY_DIR="${SERVER_DEPLOY_DIR}" \
+	-e JENKINS_JNLP_URL="${JenkinsJnlpUrl}" \
 	-v $SERVER_MOUNT_DIR:${SERVER_DEPLOY_DIR} \
+	-v $ANTIA_CONF_HOME:${work_dir}/conf \
 	--network StaticNet --ip 172.18.0.4 \
 	gameserver"
 run_docker

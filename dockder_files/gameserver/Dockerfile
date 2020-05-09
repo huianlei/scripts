@@ -61,14 +61,40 @@ RUN echo "============================================================" \
 && yum install -y tree \
 && echo "install some tool success."
 
+# yum install java
+RUN echo "============================================================" \
+&& yum install -y java \
+&& java -version \
+&& echo "install java success."
+
+# yum install cron tab
+RUN echo "============================================================" \
+&& yum install -y crontabs \
+&& crond \
+&& echo "install crontab success."
+
 # copy files to workdir
 COPY init.zip .
 
 #
 RUN unzip init.zip \ 
 && chmod 744 *.sh \
-&& rm -rf init.zip
-# && ls -lt
+&& rm -rf init.zip \
+&& ls -lt
+#&& sh http_sync.sh
+
+# install jenkins slave
+RUN echo "============================================================" \
+&& mkdir -p jenkins && cd jenkins \
+&& curl -s -o agent.jar -L http://10.0.107.63:8090/jnlpJars/agent.jar \
+&& mv ../start_agent.sh . \
+&& echo "install jenkins slave success" \
+&& echo "*/1 * * * * sh /root/workspace/jenkins/start_agent.sh" >> /var/spool/cron/root \
+&& echo "crontab -l :" \
+&& crontab -l \
+&& echo "install crontab for jenkins success"
 
 
-# ENTRYPOINT [ "sh", "docker-entrypoint.sh" ]
+#ENTRYPOINT [ "/root/workspace/docker-entrypoint.sh" ]
+#CMD [ "/root/workspace/jenkins/start_agent.sh" ]
+#CMD [ "bash" "/root/workspace/jenkins/startup.sh" ]
