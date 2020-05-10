@@ -5,13 +5,14 @@ chcp 65001
 
 :: check env
 
+call init.bat
+
 echo USERPROFILE=%USERPROFILE%
 set DOCKER_ANTIA_BASE=%USERPROFILE%\docker-antia
-if not exist %DOCKER_ANTIA_BASE% md %DOCKER_ANTIA_BASE%
 set MYSQL_DATA_HOME=%USERPROFILE%\docker-antia\mysql_data
 set SERVER_MOUNT_DIR=%USERPROFILE%\docker-antia\gameserver
 
-call init.bat
+
 
 :: static ip 
 set DOCKER_REDIS_IP=172.18.0.2
