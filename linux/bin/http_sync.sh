@@ -30,6 +30,9 @@ file_name="configs.zip"
 url="http://10.0.107.63/download/${file_name}"
 fetch_remote
 
+file_name="tools.zip"
+url="http://10.0.107.63/download/${file_name}"
+fetch_remote
 
 TO_DIR=${SERVER_DEPLOY_DIR-/tmp/deploy/antia/gameserver}
 

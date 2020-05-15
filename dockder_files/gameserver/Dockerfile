@@ -94,6 +94,10 @@ RUN echo "============================================================" \
 && crontab -l \
 && echo "install crontab for jenkins success"
 
+RUN echo "============================================================" \
+&& echo "export LANG=zh_CN.UTF-8" >> ~/.bash_profile \
+&& yum install -y which \
+&& echo "install which success"
 
 #ENTRYPOINT [ "/root/workspace/docker-entrypoint.sh" ]
 #CMD [ "/root/workspace/jenkins/start_agent.sh" ]
